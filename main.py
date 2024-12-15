@@ -103,6 +103,7 @@ def work():
                 data = base.readlines()
                 print()
                 print(" - ********************* - ")
+                # проверяем что книга не пустая
                 if len(data) > 0:
                     print(" - All of the recordings: - ")
                     for i in data:
@@ -118,6 +119,7 @@ def work():
                 while True:
                     print(" - Please write a parameter (only latin symbols and numbers) or a part of it - ")
                     flag = True
+                    # считываем параметры
                     parameter = input().strip()
                     if parameter == "":
                         continue
@@ -215,6 +217,7 @@ def work():
                 closest_birthday = None
                 min_days_diff = float('inf')  # инициализируем очень большим числом
                 now = datetime.date.today()
+                # перебор по данным с файла
                 for item in data:
                     try:
                         parts = item[1:-2].split("|")
@@ -253,7 +256,8 @@ def work():
                 data = base.readlines()
                 base.close()
                 found_data = None
-                index_of_found_data = -1  # Initialize to -1 to indicate not found
+                index_of_found_data = -1  # ставим -1 если не найдена дата
+                # перебор по данным с файла
                 for i in range(len(data)):
                     name, second_name = (data[i][1:]).split("|")[:2]
                     # Находим совпадение
@@ -268,6 +272,7 @@ def work():
                     print(" - The recording was found - ")
                     is_name_changed = False
                     while True:
+                        # делаем доп окошко, для подсказок замены
                         print(" - What do you want to change? Choose (1-4) - ")
                         print("1: Name")
                         print("2: Second name")
@@ -297,17 +302,19 @@ def work():
                         data = base.readlines()
                         base.close()
                         duplicate_found = False
+                        # ищем запись в файле
                         for i in data:
                             name, second_name = (i[1:]).split("|")[:2]
                             if name == final_name and second_name == final_second_name:
+                                # если такое имя уже есть
                                 duplicate_found = True
                                 print("\n - The name is already present!!! - \n")
                                 break
                         if duplicate_found:
                             continue
-                    # Update the record
+                    # обновляем запись
                     data[index_of_found_data] = f'@{final_name}|{final_second_name}|{final_phone_number}|{final_birthday}@\n'
-                    # Write the updated data back to the file
+                    # Записываем обратно в файл
                     base = open("base.phonebook", "w")
                     base.writelines(data)
                     base.close()
@@ -328,6 +335,7 @@ def work():
                 now = datetime.date.today()
                 # перебираем данные в файле
                 for item in data:
+                    # начинаем поиск по считаным данным с файла
                     try:
                         parts = item[1:-2].split("|")
                         name = parts[0]
